@@ -4,14 +4,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import com.bnpp.kataexam.berlinclock.exception.TimeFormatException;
 import com.bnpp.kataexam.berlinclock.model.BerlinClockResponse;
 import com.bnpp.kataexam.berlinclock.model.TimeInput;
+import com.bnpp.kataexam.berlinclock.validation.TimeValidator;
 
 public class BerlinClockServiceTest {
 
 	private BerlinClockService berlinClockService;
+	private TimeValidator timeValidator;
 	private static final String ZERO_HOUR = "00";
 	private static final String ONE_HOUR = "01";
 	private static final String FIVE_HOUR = "05";
@@ -46,10 +47,11 @@ public class BerlinClockServiceTest {
 	private static final String FIRST_TWO_LAMPS_YELLOW = "YYOO";
 	private static final String FIRST_THREE_LAMPS_YELLOW = "YYYO";
 	private static final String ALL_FOUR_LAMPS_YELLOW = "YYYY";
-
+	
 	@BeforeEach
 	public void setup() {
-		berlinClockService = new BerlinClockService();
+		timeValidator = new TimeValidator();
+		berlinClockService = new BerlinClockService(timeValidator);
 	}
 
 	@Test

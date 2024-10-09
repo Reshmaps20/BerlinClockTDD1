@@ -13,26 +13,22 @@ import com.bnpp.kataexam.berlinclock.model.DetailedBerlinTime;
 import com.bnpp.kataexam.berlinclock.model.TimeInput;
 import com.bnpp.kataexam.berlinclock.store.Lamp;
 import com.bnpp.kataexam.berlinclock.store.LampRow;
+import com.bnpp.kataexam.berlinclock.validation.TimeValidator;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class BerlinClockService {
+
+	private final TimeValidator timeValidator;
 
 	public BerlinClockResponse convertToBerlinTime(TimeInput time) {
 
-		validateTimeValues(time);
+		timeValidator.validateTimeValues(time);
 		DetailedBerlinTime detailedBerlinTime = new DetailedBerlinTime();
 		String berlinTime = calculateBerlinTime(time, detailedBerlinTime);
 
 		return new BerlinClockResponse(detailedBerlinTime, berlinTime);
-	}
-
-	private void validateTimeValues(TimeInput time) {
-		if (time.getHours() == null || time.getHours().isEmpty()) {
-			throw new TimeFormatException(Constants.TIME_IS_EMPTY_ERROR);
-		}
-		if (time.getMinutes() == null || time.getMinutes().isEmpty()) {
-			throw new TimeFormatException(Constants.TIME_IS_EMPTY_ERROR);
-		}
 	}
 
 	private String calculateBerlinTime(TimeInput time, DetailedBerlinTime detailedBerlinTime) {
