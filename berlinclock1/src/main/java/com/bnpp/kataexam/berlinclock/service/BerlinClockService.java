@@ -15,10 +15,11 @@ public class BerlinClockService {
 	private String getHoursLamp(TimeInput time) {
 
 		int hours = Integer.parseInt(time.getHours());
-		if (hours >= 5 && hours <= 9) {
+		if (hours >= 10 && hours <= 14)
+			return "RROO";
+		else if (hours >= 5 && hours <= 9)
 			return "ROOO";
-		} else {
+		else
 			return "OOOO";
-		}
 	}
 }

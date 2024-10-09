@@ -14,6 +14,7 @@ public class BerlinClockServiceTest {
 	private static final String ZERO_HOUR = "00";
 	private static final String ONE_HOUR = "01";
 	private static final String SIX_HOUR = "06";
+	private static final String TWELVE_HOUR = "12";
 	private static final String ZERO_MINUTE = "00";
 	private static final String TWO_SECONDS = "02";
 	private static final String FIVE_SECONDS = "05";
@@ -21,6 +22,7 @@ public class BerlinClockServiceTest {
 	private static final String OFF = "O";
 	private static final String FIVE_HOUR_ALLOFF = "OOOO";
 	private static final String FIVE_HOUR_FIRSTON = "ROOO";
+	private static final String FIVE_HOUR_FIRSTTWOON = "RROO";
 
 	@BeforeEach
 	public void setup() {
@@ -61,5 +63,14 @@ public class BerlinClockServiceTest {
 		TimeInput time = new TimeInput(SIX_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
 		assertTrue(response.getBerlinTime().contains(FIVE_HOUR_FIRSTON));
+	}
+	
+	@Test
+	@DisplayName("First Two Lamp in Five Hour Row should be RED when given hour is between 10 and 14")
+	public void convertToBerlinTime_passHoursBetweenTenToFourteen_firstTwoLampOfFiveHourRowShouldBeRED() {
+
+		TimeInput time = new TimeInput(TWELVE_HOUR, ZERO_MINUTE, FIVE_SECONDS);
+		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+		assertTrue(response.getBerlinTime().contains(FIVE_HOUR_FIRSTTWOON));
 	}
 }
