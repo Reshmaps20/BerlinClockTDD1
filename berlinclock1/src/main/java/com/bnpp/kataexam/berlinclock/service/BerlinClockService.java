@@ -7,13 +7,18 @@ public class BerlinClockService {
 
 	public BerlinClockResponse convertToBerlinTime(TimeInput time) {
 
-		String seconds = (Integer.parseInt(time.getSeconds()) % 2 == 0) ? "Y" : "O";
-		String hour = null;
-		if (Integer.parseInt(time.getHours()) >= 5 && Integer.parseInt(time.getHours()) <= 9) {
-			hour = "ROOO";
+		String secondLamp = (Integer.parseInt(time.getSeconds()) % 2 == 0) ? "Y" : "O";
+		String hourLamp = getHoursLamp(time);
+		return new BerlinClockResponse(String.join(" ", secondLamp, hourLamp));
+	}
+
+	private String getHoursLamp(TimeInput time) {
+
+		int hours = Integer.parseInt(time.getHours());
+		if (hours >= 5 && hours <= 9) {
+			return "ROOO";
 		} else {
-			hour = "OOOO";
+			return "OOOO";
 		}
-		return new BerlinClockResponse(String.join(" ", seconds, hour));
 	}
 }

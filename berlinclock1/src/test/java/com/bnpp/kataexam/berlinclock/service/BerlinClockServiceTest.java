@@ -56,7 +56,7 @@ public class BerlinClockServiceTest {
 	
 	@Test
 	@DisplayName("First Lamp in Five Hour Row should be RED when given hour is between 5 and 9")
-	public void convertToBerlinTime_passHoursBetweenFiveToNine_firstLambOfFiveHourRowShouldBeRED() {
+	public void convertToBerlinTime_passHoursBetweenFiveToNine_firstLampOfFiveHourRowShouldBeRED() {
 
 		TimeInput time = new TimeInput(SIX_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
