@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.bnpp.kataexam.berlinclock.model.BerlinClockResponse;
+import com.bnpp.kataexam.berlinclock.model.TimeInput;
+
 public class BerlinClockServiceTest {
 
 	private BerlinClockService berlinClockService;
@@ -18,7 +21,8 @@ public class BerlinClockServiceTest {
 	@DisplayName("Seconds Lamp in Berlin Clock should be ON for even seconds")
 	public void convertToBerlinTime_passEvenSeconds_secondsLampShouldBeON() {
 
-		String result = berlinClockService.convertToBerlinTime("00:00:02");
-		assertEquals("Y", result);
+		TimeInput time = new TimeInput("00", "00", "02");
+		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+		assertTrue(response.getBerlinTime().contains("Y"));
 	}
 }
