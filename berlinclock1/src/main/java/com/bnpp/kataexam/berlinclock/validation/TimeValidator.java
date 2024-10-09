@@ -11,7 +11,7 @@ public class TimeValidator {
 
 	public void validateTimeValues(TimeInput time) {
 
-		if (StringUtils.isEmpty(time.getHours()) || StringUtils.isEmpty(time.getMinutes())) {
+		if (StringUtils.isEmpty(time.getHours()) || StringUtils.isEmpty(time.getMinutes()) || StringUtils.isEmpty(time.getSeconds())) {
 			throw new TimeFormatException(Constants.TIME_IS_EMPTY_ERROR);
 		}
 	}
