@@ -7,9 +7,7 @@ public class BerlinClockService {
 
 	public BerlinClockResponse convertToBerlinTime(TimeInput time) {
 
-		if (Integer.parseInt(time.getSeconds()) % 2 == 0) {
-			return new BerlinClockResponse("Y");
-		} else
-			return new BerlinClockResponse("O");
+		String result = (Integer.parseInt(time.getSeconds()) % 2 == 0) ? "Y" : "O";
+		return new BerlinClockResponse(result);
 	}
 }
