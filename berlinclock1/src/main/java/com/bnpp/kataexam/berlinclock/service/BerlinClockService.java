@@ -15,7 +15,9 @@ public class BerlinClockService {
 	private String getHoursLamp(TimeInput time) {
 
 		int hours = Integer.parseInt(time.getHours());
-		if (hours >= 10 && hours <= 14)
+		if (hours > 15 && hours <= 19)
+			return "RRRO";
+		else if (hours >= 10 && hours <= 14)
 			return "RROO";
 		else if (hours >= 5 && hours <= 9)
 			return "ROOO";
