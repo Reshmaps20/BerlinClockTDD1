@@ -15,7 +15,12 @@ public class BerlinClockService {
 		String hourLamp = getHoursLamp(time);
 		String oneHourLamp = getOneHourLamp(time);
 		String fiveMinuteLamp = getMinuteLamp(time);
-		return new BerlinClockResponse(String.join(" ", secondLamp, hourLamp,oneHourLamp,fiveMinuteLamp));
+		String oneMinuteLamp = getOneMinuteLamp(time);
+		return new BerlinClockResponse(String.join(" ", secondLamp, hourLamp,oneHourLamp,fiveMinuteLamp, oneMinuteLamp));
+	}
+
+	private String getOneMinuteLamp(TimeInput time) {
+		return "OOOO";
 	}
 
 	private String getMinuteLamp(TimeInput time) {

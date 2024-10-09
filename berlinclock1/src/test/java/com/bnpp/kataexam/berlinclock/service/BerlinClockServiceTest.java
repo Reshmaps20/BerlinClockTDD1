@@ -20,6 +20,7 @@ public class BerlinClockServiceTest {
 	private static final String EIGHTEEN_HOUR = "18";
 	private static final String TWENTYTHREE_HOUR = "23";
 	private static final String ZERO_MINUTE = "00";
+	private static final String ONE_MINUTE = "01";
 	private static final String TWO_MINUTE = "02";
 	private static final String SIX_MINUTE = "06";
 	private static final String TWELVE_MINUTE = "12";
@@ -197,5 +198,14 @@ public class BerlinClockServiceTest {
 		TimeInput time = new TimeInput(FIVE_HOUR, TWENTY_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
 		assertEquals(response.getBerlinTime().split(" ")[3],FIVE_MINT_FOURLAMPON);
+	}
+	
+	@Test
+	@DisplayName("One Minute Lamp in Berlin Clock should be OFF when given minute is divisible by 5")
+	public void convertToBerlinTime_passMinuteDivisibleByFive_allOneMinuteLampShouldBeOFF() {
+
+		TimeInput time = new TimeInput(FIVE_HOUR, ONE_MINUTE, FIVE_SECONDS);
+		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+		assertEquals(response.getBerlinTime().split(" ")[4],FIVE_HOUR_ALLOFF);
 	}
 }
