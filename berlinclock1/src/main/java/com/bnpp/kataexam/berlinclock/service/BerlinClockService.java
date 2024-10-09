@@ -19,7 +19,17 @@ public class BerlinClockService {
 	}
 
 	private String getMinuteLamp(TimeInput time) {
-		return "OOOOOOOOOOO";
+		
+		int minutes = Integer.parseInt(time.getMinutes());
+		StringBuilder lamps = new StringBuilder();
+		
+		if (minutes >= 5 && minutes < 10) {
+			lamps.append(Lamp.YELLOW.getValue());
+		}
+		while (lamps.length() < 11) {
+			lamps.append(Lamp.OFF.getValue());
+		}
+		return lamps.toString();
 	}
 
 	private String getOneHourLamp(TimeInput time) {
