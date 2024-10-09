@@ -23,6 +23,7 @@ public class BerlinClockServiceTest {
 	private static final String TWO_MINUTE = "02";
 	private static final String SIX_MINUTE = "06";
 	private static final String TWELVE_MINUTE = "12";
+	private static final String FIFTEEN_MINUTE = "15";
 	private static final String TWO_SECONDS = "02";
 	private static final String FIVE_SECONDS = "05";
 	private static final String YELLOW = "Y";
@@ -35,6 +36,7 @@ public class BerlinClockServiceTest {
 	private static final String FIVE_MINT_ALLOFF = "OOOOOOOOOOO";
 	private static final String FIVE_MINT_FIRSTON = "YOOOOOOOOOO";
 	private static final String FIVE_MINT_FIRSTTWOON = "YYOOOOOOOOO";
+	private static final String FIVE_MINT_THIRDRED = "YYROOOOOOOO";
 
 
 	@BeforeEach
@@ -175,5 +177,14 @@ public class BerlinClockServiceTest {
 		TimeInput time = new TimeInput(FIVE_HOUR, TWELVE_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
 		assertEquals(response.getBerlinTime().split(" ")[3],FIVE_MINT_FIRSTTWOON);
+	}
+	
+	@Test
+	@DisplayName("Third Lamp in Five Minute Row should be RED when given minute is 15")
+	public void convertToBerlinTime_passMinutesFifteen_fiveMinuteRowThirdLampShouldBeRed() {
+
+		TimeInput time = new TimeInput(FIVE_HOUR, FIFTEEN_MINUTE, FIVE_SECONDS);
+		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+		assertEquals(response.getBerlinTime().split(" ")[3],FIVE_MINT_THIRDRED);
 	}
 }
