@@ -20,7 +20,12 @@ public class BerlinClockService {
 	}
 
 	private String getOneMinuteLamp(TimeInput time) {
-		return "OOOO";
+
+		int minutes = Integer.parseInt(time.getMinutes());
+		if (minutes % 5 == 1)
+			return "YOOO";
+		else
+			return "OOOO";
 	}
 
 	private String getMinuteLamp(TimeInput time) {
