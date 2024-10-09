@@ -18,7 +18,11 @@ public class BerlinClockService {
 	}
 
 	private String getOneHourLamp(TimeInput time) {
-		return "OOOO";
+		int hours = Integer.parseInt(time.getHours());
+		if (hours % 5 == 1)
+			return "ROOO";
+		else
+			return "OOOO";
 	}
 
 	private String getHoursLamp(TimeInput time) {
