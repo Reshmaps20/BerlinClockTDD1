@@ -3,28 +3,52 @@ package com.bnpp.kataexam.berlinclock.validation;
 import com.bnpp.kataexam.berlinclock.constants.Constants;
 import com.bnpp.kataexam.berlinclock.exception.TimeFormatException;
 import com.bnpp.kataexam.berlinclock.model.TimeInput;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
+@NoArgsConstructor
+@AllArgsConstructor
 public class TimeValidator {
+
+	private Predicate<Integer> validationRule;
+	private String errorMessage;
+
+	public void validate(int value) {
+		if (!validationRule.test(value)) {
+			throw new TimeFormatException(errorMessage);
+		}
+	}
 
 	public void validateTimeValues(TimeInput time) {
 
 		if (isAnyTimeFieldInvalid(time)) {
 			throw new TimeFormatException(Constants.TIME_IS_EMPTY_ERROR);
 		}
-		if(Integer.parseInt(time.getHours()) < 0 || Integer.parseInt(time.getHours()) > 23) {
-			throw new TimeFormatException(Constants.INVALID_HOUR_ERROR);
-		}
-		if(Integer.parseInt(time.getMinutes()) < 0 || Integer.parseInt(time.getMinutes()) > 59) {
-			throw new TimeFormatException(Constants.INVALID_MINUTE_ERROR);
-		}
-		if(Integer.parseInt(time.getSeconds()) < 0 || Integer.parseInt(time.getSeconds()) > 59) {
-			throw new TimeFormatException(Constants.INVALID_SECOND_ERROR);
-		}
 		
+		isTimeRangeInvalid(time);
+	}
+
+	private void isTimeRangeInvalid(TimeInput time) {
 		
+		List<TimeValidator> validators = Arrays.asList(
+				new TimeValidator(val -> val >= Constants.ZERO && val <= Constants.MAX_HOURS,Constants.INVALID_HOUR_ERROR),
+				new TimeValidator(val -> val >= Constants.ZERO && val <= Constants.MAX_MINUTES,Constants.INVALID_MINUTE_ERROR),
+				new TimeValidator(val -> val >= Constants.ZERO && val <= Constants.MAX_SECONDS,Constants.INVALID_SECOND_ERROR));
+
+		int[] valuesToValidate = new int[] { Integer.parseInt(time.getHours()), Integer.parseInt(time.getMinutes()),
+				Integer.parseInt(time.getSeconds()) };
+
+		IntStream.range(0, validators.size()).forEach(i -> validators.get(i).validate(valuesToValidate[i]));
 	}
 
 	private boolean isAnyTimeFieldInvalid(TimeInput time) {
