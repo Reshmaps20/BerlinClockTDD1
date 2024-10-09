@@ -4,10 +4,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import com.bnpp.kataexam.berlinclock.constants.Constants;
 import com.bnpp.kataexam.berlinclock.model.BerlinClockResponse;
 import com.bnpp.kataexam.berlinclock.model.DetailedBerlinTime;
 import com.bnpp.kataexam.berlinclock.model.TimeInput;
 import com.bnpp.kataexam.berlinclock.store.Lamp;
+import com.bnpp.kataexam.berlinclock.store.LampRow;
 
 public class BerlinClockService {
 
@@ -44,14 +46,15 @@ public class BerlinClockService {
 	}
 
 	private String getSecondsLamp(int seconds) {
-		return (seconds % 2 == 0) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue();
+		return (seconds % Constants.SECONDS_DIVIDER == Constants.ZERO) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue();
 	}
 
 	private String getOneMinuteLamp(TimeInput time) {
 
 		int minutes = Integer.parseInt(time.getMinutes());
 
-		return IntStream.range(0, 4).mapToObj(i -> (i < minutes % 5) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue())
+		return IntStream.range(Constants.ZERO, LampRow.BOTTOM_MINUTE_LAMP.getLength())
+				.mapToObj(i -> (i < minutes % Constants.MINUTES_DIVIDER) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue())
 				.collect(Collectors.joining());
 	}
 
@@ -59,24 +62,26 @@ public class BerlinClockService {
 
 		int minutes = Integer.parseInt(time.getMinutes());
 
-		String mintLamps = IntStream.range(0, 11)
-				.mapToObj(i -> (i < minutes / 5) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue())
+		String mintLamps = IntStream.range(Constants.ZERO, LampRow.TOP_MINUTE_LAMP.getLength())
+				.mapToObj(i -> (i < minutes / Constants.MINUTES_DIVIDER) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue())
 				.collect(Collectors.joining());
 
-		return mintLamps.replace("YYY", "YYR");
+		return mintLamps.replace(Constants.REPLACE_YYY, Constants.REPLACE_TO_YYR);
 	}
 
 	private String getOneHourLamp(TimeInput time) {
 
 		int hours = Integer.parseInt(time.getHours());
-		return IntStream.range(0, 4).mapToObj(i -> (i < hours % 5) ? Lamp.RED.getValue() : Lamp.OFF.getValue())
+		return IntStream.range(Constants.ZERO, LampRow.BOTTOM_HOUR_LAMP.getLength())
+				.mapToObj(i -> (i < hours % Constants.HOUR_DIVIDER) ? Lamp.RED.getValue() : Lamp.OFF.getValue())
 				.collect(Collectors.joining());
 	}
 
 	private String getHoursLamp(TimeInput time) {
 
 		int hours = Integer.parseInt(time.getHours());
-		return IntStream.range(0, 4).mapToObj(i -> (i < hours / 5) ? Lamp.RED.getValue() : Lamp.OFF.getValue())
+		return IntStream.range(0, LampRow.TOP_HOUR_LAMP.getLength())
+				.mapToObj(i -> (i < hours / 5) ? Lamp.RED.getValue() : Lamp.OFF.getValue())
 				.collect(Collectors.joining());
 
 	}
