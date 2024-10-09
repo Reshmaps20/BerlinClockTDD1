@@ -56,6 +56,8 @@ public class BerlinClockService {
 			return "YYOO";
 		else if (minutes % 5 == 3)
 			return "YYYO";
+		else if (minutes % 5 == 4)
+			return "YYYY";
 		else
 			return "OOOO";
 	}
