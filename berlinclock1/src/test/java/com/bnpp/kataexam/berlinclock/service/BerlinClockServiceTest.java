@@ -50,6 +50,7 @@ public class BerlinClockServiceTest {
 	private static final String FIRST_TWO_LAMPS_YELLOW = "YYOO";
 	private static final String FIRST_THREE_LAMPS_YELLOW = "YYYO";
 	private static final String ALL_FOUR_LAMPS_YELLOW = "YYYY";
+	private static final String DIGITAL_TIME = "14:24:05";
 	
 	@BeforeEach
 	public void setup() {
@@ -313,5 +314,14 @@ public class BerlinClockServiceTest {
 		assertThrows(TimeFormatException.class, () -> {
 			berlinClockService.convertToBerlinTime(time);
 		});
+	}
+	
+	@Test
+	@DisplayName("Digial Time should be correctly displayed")
+	public void convertToBerlinTime_passHoursMinutesSeconds_responseShouldContainDigitalTime() {
+
+		TimeInput time = new TimeInput(FOURTEEN_HOUR, TWENTYFOUR_MINUTE, FIVE_SECONDS);
+		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+		assertEquals(response.getDigitalTime(),DIGITAL_TIME );
 	}
 }

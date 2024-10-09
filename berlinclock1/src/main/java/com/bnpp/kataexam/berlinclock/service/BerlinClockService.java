@@ -27,7 +27,7 @@ public class BerlinClockService {
 		DetailedBerlinTime detailedBerlinTime = new DetailedBerlinTime();
 		String berlinTime = calculateBerlinTime(time, detailedBerlinTime);
 
-		return new BerlinClockResponse(detailedBerlinTime, berlinTime);
+		return new BerlinClockResponse(convertToDigitalTime(time),detailedBerlinTime, berlinTime);
 	}
 
 	private String calculateBerlinTime(TimeInput time, DetailedBerlinTime detailedBerlinTime) {
@@ -79,5 +79,12 @@ public class BerlinClockService {
 		return IntStream.range(Constants.ZERO, rowLength)
 				.mapToObj(i -> (i < hourValue) ? Lamp.RED.getValue() : Lamp.OFF.getValue())
 				.collect(Collectors.joining());
+	}
+	
+	private String convertToDigitalTime(TimeInput time) {
+		return Arrays.stream(new int[] { Integer.parseInt(time.getHours()), Integer.parseInt(time.getMinutes()),
+						Integer.parseInt(time.getSeconds()) })
+				.mapToObj(i -> String.format(Constants.TIME_FORMAT, i))
+				.collect(Collectors.joining(Constants.TIME_SEPARATOR));
 	}
 }
