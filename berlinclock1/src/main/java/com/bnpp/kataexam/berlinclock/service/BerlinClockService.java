@@ -6,6 +6,10 @@ import com.bnpp.kataexam.berlinclock.model.TimeInput;
 public class BerlinClockService {
 
 	public BerlinClockResponse convertToBerlinTime(TimeInput time) {
-		return new BerlinClockResponse("Y");
+
+		if (Integer.parseInt(time.getSeconds()) % 2 == 0) {
+			return new BerlinClockResponse("Y");
+		} else
+			return new BerlinClockResponse("O");
 	}
 }

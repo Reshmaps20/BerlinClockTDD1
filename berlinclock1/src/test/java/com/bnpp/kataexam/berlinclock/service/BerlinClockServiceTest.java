@@ -25,4 +25,13 @@ public class BerlinClockServiceTest {
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
 		assertTrue(response.getBerlinTime().contains("Y"));
 	}
+
+	@Test
+	@DisplayName("Seconds Lamp in Berlin Clock should be OFF for odd seconds")
+	public void convertToBerlinTime_passOddSeconds_secondsLampShouldBeOFF() {
+
+		TimeInput time = new TimeInput("00", "00", "05");
+		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+		assertTrue(response.getBerlinTime().contains("O"));
+	}
 }
