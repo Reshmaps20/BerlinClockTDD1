@@ -124,4 +124,13 @@ public class BerlinClockServiceTest {
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
 		assertEquals(response.getBerlinTime().split(" ")[2],FIVE_HOUR_FIRSTTWOON);
 	}
+	
+	@Test
+	@DisplayName("First Three Lamp in One Hour Row should be RED when hour divided by 5 has reminder 3")
+	public void convertToBerlinTime_whenHourDividedByFiveHasRemainderThree_firstThreeLampShouldBeRED() {
+
+		TimeInput time = new TimeInput(EIGHTEEN_HOUR, ZERO_MINUTE, FIVE_SECONDS);
+		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+		assertEquals(response.getBerlinTime().split(" ")[2],FIVE_HOUR_FIRSTTHREEON);
+	}
 }
