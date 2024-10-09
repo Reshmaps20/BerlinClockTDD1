@@ -5,15 +5,13 @@ import java.util.stream.IntStream;
 
 import com.bnpp.kataexam.berlinclock.model.BerlinClockResponse;
 import com.bnpp.kataexam.berlinclock.model.TimeInput;
+import com.bnpp.kataexam.berlinclock.store.Lamp;
 
 public class BerlinClockService {
 
-	public static final String RED = "R";
-	public static final String OFF = "O";
-
 	public BerlinClockResponse convertToBerlinTime(TimeInput time) {
 
-		String secondLamp = (Integer.parseInt(time.getSeconds()) % 2 == 0) ? "Y" : "O";
+		String secondLamp = (Integer.parseInt(time.getSeconds()) % 2 == 0) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue();
 		String hourLamp = getHoursLamp(time);
 		return new BerlinClockResponse(String.join(" ", secondLamp, hourLamp));
 	}
@@ -21,7 +19,8 @@ public class BerlinClockService {
 	private String getHoursLamp(TimeInput time) {
 
 		int hours = Integer.parseInt(time.getHours());
-		return IntStream.range(0, 4).mapToObj(i -> (i < hours / 5) ? RED : OFF).collect(Collectors.joining());
+		return IntStream.range(0, 4).mapToObj(i -> (i < hours / 5) ? Lamp.RED.getValue() : Lamp.OFF.getValue())
+				.collect(Collectors.joining());
 
 	}
 }
