@@ -43,4 +43,6 @@ public class TestConstants {
 	public static final String BERLIN_TIME = "O RROO RRRR YYRYOOOOOOO YYYY";
 	public static final String ZERO_BERLIN_TIME = "Y OOOO OOOO OOOOOOOOOOO OOOO";
 	public static final String TWENTYTHREE_BERLIN_TIME = "O RRRR RRRO YYRYYRYYRYY YYYY";
+	public static final String TIME_IS_EMPTY_ERROR = "Invalid Time.Time cannot be null or empty.";
+
 }

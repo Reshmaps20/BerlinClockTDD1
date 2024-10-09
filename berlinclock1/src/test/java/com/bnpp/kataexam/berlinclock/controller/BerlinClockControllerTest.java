@@ -1,6 +1,7 @@
 package com.bnpp.kataexam.berlinclock.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -12,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
+
+import com.bnpp.kataexam.berlinclock.exception.TimeFormatException;
 import com.bnpp.kataexam.berlinclock.model.BerlinClockRequest;
 import com.bnpp.kataexam.berlinclock.model.BerlinClockResponse;
 import com.bnpp.kataexam.berlinclock.model.DetailedBerlinTime;
@@ -59,4 +62,16 @@ public class BerlinClockControllerTest {
 				.andExpect(jsonPath("$.berlinTime").value(BERLIN_TIME));
 	}
 
+	@Test
+	public void convertTime_invalidRequest_shouldReturnBadRequest() throws Exception {
+		
+		timeInput = new TimeInput("", TWENTYFOUR_MINUTE, FIVE_SECONDS);
+		request.setTime(timeInput);
+		doThrow(new TimeFormatException(TIME_IS_EMPTY_ERROR)).when(berlinClockService).convertToBerlinTime(any(TimeInput.class));
+		
+		mockMvc.perform(
+				post("/api/berlinclock/convert").contentType(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(request)))
+				.andExpect(status().isBadRequest());
+	}
 }
