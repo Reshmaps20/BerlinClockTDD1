@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
-
 import com.bnpp.kataexam.berlinclock.exception.TimeFormatException;
 import com.bnpp.kataexam.berlinclock.model.BerlinClockRequest;
 import com.bnpp.kataexam.berlinclock.model.BerlinClockResponse;
@@ -45,6 +45,7 @@ public class BerlinClockControllerTest {
 	}
 
 	@Test
+	@DisplayName("Rest API to convert the time to Berlin Time")
 	public void convertTime_validRequest_shouldReturnBerlinClockResponse() throws Exception {
 
 		detailedBerlinTime.setSecondsLamp(OFF);
@@ -54,15 +55,15 @@ public class BerlinClockControllerTest {
 		detailedBerlinTime.setBottomOneMinuteLamps(BERLIN_TIME);
 		BerlinClockResponse expectedResponse = new BerlinClockResponse(DIGITAL_TIME, detailedBerlinTime, BERLIN_TIME);
 		request.setTime(timeInput);
-
 		when(berlinClockService.convertToBerlinTime(any(TimeInput.class))).thenReturn(expectedResponse);
 
-		mockMvc.perform(post("/api/berlinclock/convert").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(post(API_PATH).contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(request))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.berlinTime").value(BERLIN_TIME));
 	}
 
 	@Test
+	@DisplayName("Rest API should throw exception when invalid input is passed")
 	public void convertTime_invalidRequest_shouldReturnBadRequest() throws Exception {
 		
 		timeInput = new TimeInput("", TWENTYFOUR_MINUTE, FIVE_SECONDS);
@@ -70,7 +71,7 @@ public class BerlinClockControllerTest {
 		doThrow(new TimeFormatException(TIME_IS_EMPTY_ERROR)).when(berlinClockService).convertToBerlinTime(any(TimeInput.class));
 		
 		mockMvc.perform(
-				post("/api/berlinclock/convert").contentType(MediaType.APPLICATION_JSON)
+				post(API_PATH).contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(request)))
 				.andExpect(status().isBadRequest());
 	}
