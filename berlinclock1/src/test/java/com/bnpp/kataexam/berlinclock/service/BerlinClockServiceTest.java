@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
 import com.bnpp.kataexam.berlinclock.exception.TimeFormatException;
 import com.bnpp.kataexam.berlinclock.model.BerlinClockResponse;
 import com.bnpp.kataexam.berlinclock.model.TimeInput;
@@ -340,14 +343,19 @@ public class BerlinClockServiceTest {
 		assertEquals(response.getDigitalTime(),DIGITAL_TIME );
 	}
 	
-	@Test
-	@DisplayName("Berlin Time should be correctly displayed")
-	public void convertToBerlinTime_passHoursMinutesSeconds_responseShouldContainBerlinTime() {
-
-		TimeInput time = new TimeInput(FOURTEEN_HOUR, TWENTYFOUR_MINUTE, FIVE_SECONDS);
-		
-		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		
-		assertEquals(response.getBerlinTime(),BERLIN_TIME);
-	}
+	@ParameterizedTest
+    @DisplayName("Berlin Time should be correctly displayed for various inputs")
+    @CsvSource({
+        "14, 24, 5, " + BERLIN_TIME ,
+        "00, 00, 0, " + ZERO_BERLIN_TIME, 
+        "23, 59, 59," + TWENTYTHREE_BERLIN_TIME 
+    })
+    public void convertToBerlinTime_passHoursMinutesSeconds_responseShouldContainBerlinTime(String hour, String minute, String second, String expectedBerlinTime) {
+        
+        TimeInput time = new TimeInput(hour, minute, second);
+        
+        BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+        
+        assertEquals(expectedBerlinTime, response.getBerlinTime());
+    }
 }

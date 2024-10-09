@@ -41,4 +41,6 @@ public class TestConstants {
 	public static final String ALL_FOUR_LAMPS_YELLOW = "YYYY";
 	public static final String DIGITAL_TIME = "14:24:05";
 	public static final String BERLIN_TIME = "O RROO RRRR YYRYOOOOOOO YYYY";
+	public static final String ZERO_BERLIN_TIME = "Y OOOO OOOO OOOOOOOOOOO OOOO";
+	public static final String TWENTYTHREE_BERLIN_TIME = "O RRRR RRRO YYRYYRYYRYY YYYY";
 }
