@@ -12,11 +12,13 @@ public class BerlinClockServiceTest {
 
 	private BerlinClockService berlinClockService;
 	private static final String ZERO_HOUR = "00";
+	private static final String ONE_HOUR = "01";
 	private static final String ZERO_MINUTE = "00";
 	private static final String TWO_SECONDS = "02";
 	private static final String FIVE_SECONDS = "05";
 	private static final String YELLOW = "Y";
 	private static final String OFF = "O";
+	private static final String FIVE_HOUR_ALLOFF = "OOOO";
 
 	@BeforeEach
 	public void setup() {
@@ -39,5 +41,14 @@ public class BerlinClockServiceTest {
 		TimeInput time = new TimeInput(ZERO_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
 		assertTrue(response.getBerlinTime().contains(OFF));
+	}
+	
+	@Test
+	@DisplayName("Five Hour Lamp in Berlin Clock should be OFF when given hour is less than 5")
+	public void convertToBerlinTime_passHoursBetweenOneToFive_allFiveHourLampShouldBeOFF() {
+
+		TimeInput time = new TimeInput(ONE_HOUR, ZERO_MINUTE, FIVE_SECONDS);
+		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+		assertTrue(response.getBerlinTime().contains(FIVE_HOUR_ALLOFF));
 	}
 }
