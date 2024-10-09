@@ -19,13 +19,15 @@ public class BerlinClockService {
 	}
 
 	private String getMinuteLamp(TimeInput time) {
-		
+
 		int minutes = Integer.parseInt(time.getMinutes());
 		StringBuilder lamps = new StringBuilder();
-		
-		if (minutes >= 5 && minutes < 10) {
+
+		if (minutes >= 10 && minutes < 15)
+			lamps.append("YY");
+		else if (minutes >= 5 && minutes < 10)
 			lamps.append(Lamp.YELLOW.getValue());
-		}
+		
 		while (lamps.length() < 11) {
 			lamps.append(Lamp.OFF.getValue());
 		}

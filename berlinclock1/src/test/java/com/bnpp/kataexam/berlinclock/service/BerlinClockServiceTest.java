@@ -22,6 +22,7 @@ public class BerlinClockServiceTest {
 	private static final String ZERO_MINUTE = "00";
 	private static final String TWO_MINUTE = "02";
 	private static final String SIX_MINUTE = "06";
+	private static final String TWELVE_MINUTE = "12";
 	private static final String TWO_SECONDS = "02";
 	private static final String FIVE_SECONDS = "05";
 	private static final String YELLOW = "Y";
@@ -33,7 +34,7 @@ public class BerlinClockServiceTest {
 	private static final String FIVE_HOUR_ALLON = "RRRR";
 	private static final String FIVE_MINT_ALLOFF = "OOOOOOOOOOO";
 	private static final String FIVE_MINT_FIRSTON = "YOOOOOOOOOO";
-
+	private static final String FIVE_MINT_FIRSTTWOON = "YYOOOOOOOOO";
 
 
 	@BeforeEach
@@ -159,11 +160,20 @@ public class BerlinClockServiceTest {
 	}
 	
 	@Test
-	@DisplayName("First Lamp in Five Minute Row should be YELLOW when given minute is less than 10")
-	public void convertToBerlinTime_passMinutesLessThanTen_firstLampOfFiveMinuteLampShouldBeYellow() {
+	@DisplayName("First Lamp in Five Minute Row should be YELLOW when given minute is between 5 and 10")
+	public void convertToBerlinTime_passMinutesBetweenFiveAndTen_firstLampOfFiveMinuteLampShouldBeYellow() {
 
 		TimeInput time = new TimeInput(FIVE_HOUR, SIX_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
 		assertEquals(response.getBerlinTime().split(" ")[3],FIVE_MINT_FIRSTON);
+	}
+	
+	@Test
+	@DisplayName("First Two Lamp in Five Minute Row should be YELLOW when given minute is between 10 and 15")
+	public void convertToBerlinTime_passMinutesBetweenTenAndFifteen_firstTwoLampOfFiveMinuteLampShouldBeYellow() {
+
+		TimeInput time = new TimeInput(FIVE_HOUR, TWELVE_MINUTE, FIVE_SECONDS);
+		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+		assertEquals(response.getBerlinTime().split(" ")[3],FIVE_MINT_FIRSTTWOON);
 	}
 }
