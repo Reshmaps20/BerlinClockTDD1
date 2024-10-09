@@ -30,6 +30,9 @@ public class BerlinClockService {
 		if (time.getHours() == null || time.getHours().isEmpty()) {
 			throw new TimeFormatException(Constants.TIME_IS_EMPTY_ERROR);
 		}
+		if (time.getMinutes() == null || time.getMinutes().isEmpty()) {
+			throw new TimeFormatException(Constants.TIME_IS_EMPTY_ERROR);
+		}
 	}
 
 	private String calculateBerlinTime(TimeInput time, DetailedBerlinTime detailedBerlinTime) {

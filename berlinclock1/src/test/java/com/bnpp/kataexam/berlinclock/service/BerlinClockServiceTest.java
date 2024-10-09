@@ -259,4 +259,14 @@ public class BerlinClockServiceTest {
 			berlinClockService.convertToBerlinTime(time);
 		});
 	}
+	
+	@Test
+	@DisplayName("Input Minutes should not be empty")
+	public void convertToBerlinTime_checkWhetherTheInputMinutesAreNotEmpty_shouldThrowTimeFormatException() {
+
+		TimeInput time = new TimeInput(FOURTEEN_HOUR, "", FIVE_SECONDS);
+		assertThrows(TimeFormatException.class, () -> {
+			berlinClockService.convertToBerlinTime(time);
+		});
+	}
 }
