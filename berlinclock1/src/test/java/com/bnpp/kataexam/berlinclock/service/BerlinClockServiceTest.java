@@ -20,7 +20,6 @@ public class BerlinClockServiceTest {
 	private static final String EIGHTEEN_HOUR = "18";
 	private static final String TWENTYTHREE_HOUR = "23";
 	private static final String ZERO_MINUTE = "00";
-	private static final String ONE_MINUTE = "01";
 	private static final String TWO_MINUTE = "02";
 	private static final String SIX_MINUTE = "06";
 	private static final String TWELVE_MINUTE = "12";
@@ -30,7 +29,7 @@ public class BerlinClockServiceTest {
 	private static final String FIVE_SECONDS = "05";
 	private static final String YELLOW = "Y";
 	private static final String OFF = "O";
-	private static final String FIVE_HOUR_ALLOFF = "OOOO";
+	private static final String FOUR_LAMPS_OFF = "OOOO";
 	private static final String FIVE_HOUR_FIRSTON = "ROOO";
 	private static final String FIVE_HOUR_FIRSTTWOON = "RROO";
 	private static final String FIVE_HOUR_FIRSTTHREEON = "RRRO";
@@ -71,7 +70,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(ONE_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertTrue(response.getBerlinTime().contains(FIVE_HOUR_ALLOFF));
+		assertTrue(response.getBerlinTime().contains(FOUR_LAMPS_OFF));
 	}
 	
 	@Test
@@ -116,7 +115,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(FIVE_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertEquals(response.getBerlinTime().split(" ")[2],FIVE_HOUR_ALLOFF);
+		assertEquals(response.getBerlinTime().split(" ")[2],FOUR_LAMPS_OFF);
 	}
 	
 	@Test
@@ -204,8 +203,8 @@ public class BerlinClockServiceTest {
 	@DisplayName("One Minute Lamp in Berlin Clock should be OFF when given minute is divisible by 5")
 	public void convertToBerlinTime_passMinuteDivisibleByFive_allOneMinuteLampShouldBeOFF() {
 
-		TimeInput time = new TimeInput(FIVE_HOUR, ONE_MINUTE, FIVE_SECONDS);
+		TimeInput time = new TimeInput(FIVE_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertEquals(response.getBerlinTime().split(" ")[4],FIVE_HOUR_ALLOFF);
+		assertEquals(response.getBerlinTime().split(" ")[4],FOUR_LAMPS_OFF);
 	}
 }
