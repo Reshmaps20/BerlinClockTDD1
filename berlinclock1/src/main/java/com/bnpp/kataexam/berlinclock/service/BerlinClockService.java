@@ -1,9 +1,15 @@
 package com.bnpp.kataexam.berlinclock.service;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import com.bnpp.kataexam.berlinclock.model.BerlinClockResponse;
 import com.bnpp.kataexam.berlinclock.model.TimeInput;
 
 public class BerlinClockService {
+
+	public static final String RED = "R";
+	public static final String OFF = "O";
 
 	public BerlinClockResponse convertToBerlinTime(TimeInput time) {
 
@@ -15,15 +21,7 @@ public class BerlinClockService {
 	private String getHoursLamp(TimeInput time) {
 
 		int hours = Integer.parseInt(time.getHours());
-		if (hours >= 20 && hours <= 23)
-			return "RRRR";
-		else if (hours >= 15 && hours <= 19)
-			return "RRRO";
-		else if (hours >= 10 && hours <= 14)
-			return "RROO";
-		else if (hours >= 5 && hours <= 9)
-			return "ROOO";
-		else
-			return "OOOO";
+		return IntStream.range(0, 4).mapToObj(i -> (i < hours / 5) ? RED : OFF).collect(Collectors.joining());
+
 	}
 }
