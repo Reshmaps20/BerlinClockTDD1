@@ -21,6 +21,7 @@ public class BerlinClockServiceTest {
 	private static final String FOURTEEN_HOUR = "14";
 	private static final String EIGHTEEN_HOUR = "18";
 	private static final String TWENTYTHREE_HOUR = "23";
+	private static final String THIRTY_HOUR = "30";
 	private static final String ZERO_MINUTE = "00";
 	private static final String TWO_MINUTE = "02";
 	private static final String SIX_MINUTE = "06";
@@ -277,6 +278,16 @@ public class BerlinClockServiceTest {
 	public void convertToBerlinTime_checkWhetherTheInputSecondsAreNotEmpty_shouldThrowTimeFormatException() {
 
 		TimeInput time = new TimeInput(FOURTEEN_HOUR, TWENTYFOUR_MINUTE, "");
+		assertThrows(TimeFormatException.class, () -> {
+			berlinClockService.convertToBerlinTime(time);
+		});
+	}
+	
+	@Test
+	@DisplayName("Input Hours must be between 0 and 23")
+	public void convertToBerlinTime_checkWhetherTheHourIsValid_shouldThrowTimeFormatException() {
+
+		TimeInput time = new TimeInput(THIRTY_HOUR, TWENTYFOUR_MINUTE, FIVE_SECONDS);
 		assertThrows(TimeFormatException.class, () -> {
 			berlinClockService.convertToBerlinTime(time);
 		});

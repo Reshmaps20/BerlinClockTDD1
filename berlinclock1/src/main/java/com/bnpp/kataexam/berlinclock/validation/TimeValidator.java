@@ -14,6 +14,9 @@ public class TimeValidator {
 		if (isAnyTimeFieldInvalid(time)) {
 			throw new TimeFormatException(Constants.TIME_IS_EMPTY_ERROR);
 		}
+		if(Integer.parseInt(time.getHours()) < 0 || Integer.parseInt(time.getHours()) > 23) {
+			throw new TimeFormatException(Constants.INVALID_HOUR_ERROR);
+		}
 	}
 
 	private boolean isAnyTimeFieldInvalid(TimeInput time) {
