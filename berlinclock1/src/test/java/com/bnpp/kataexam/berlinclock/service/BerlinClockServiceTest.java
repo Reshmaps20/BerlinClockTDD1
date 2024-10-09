@@ -30,16 +30,16 @@ public class BerlinClockServiceTest {
 	private static final String YELLOW = "Y";
 	private static final String OFF = "O";
 	private static final String FOUR_LAMPS_OFF = "OOOO";
-	private static final String FIVE_HOUR_FIRSTON = "ROOO";
-	private static final String FIVE_HOUR_FIRSTTWOON = "RROO";
-	private static final String FIVE_HOUR_FIRSTTHREEON = "RRRO";
-	private static final String FIVE_HOUR_ALLON = "RRRR";
-	private static final String FIVE_MINT_ALLOFF = "OOOOOOOOOOO";
-	private static final String FIVE_MINT_FIRSTON = "YOOOOOOOOOO";
-	private static final String FIVE_MINT_FIRSTTWOON = "YYOOOOOOOOO";
-	private static final String FIVE_MINT_THIRDRED = "YYROOOOOOOO";
+	private static final String FIRST_LAMP_RED = "ROOO";
+	private static final String FIRST_TWO_LAMPS_RED = "RROO";
+	private static final String FIRST_THREE_LAMPS_RED = "RRRO";
+	private static final String ALL_FOUR_LAMPS_RED = "RRRR";
+	private static final String ALL_11_LAMPS_OFF = "OOOOOOOOOOO";
+	private static final String ONE_LAMP_YELLOW_OUT_OF_ELEVEN = "YOOOOOOOOOO";
+	private static final String TWO_LAMP_YELLOW_OUT_OF_ELEVEN = "YYOOOOOOOOO";
+	private static final String THIRD_LAMP_RED_OUT_OF_ELEVEN = "YYROOOOOOOO";
 	private static final String FIVE_MINT_FOURLAMPON = "YYRYOOOOOOO";
-	private static final String ONE_MINT_FIRSTON = "YOOO";
+	private static final String FIRST_LAMP_YELLOW = "YOOO";
 
 
 	@BeforeEach
@@ -80,7 +80,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(SIX_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertTrue(response.getBerlinTime().contains(FIVE_HOUR_FIRSTON));
+		assertTrue(response.getBerlinTime().contains(FIRST_LAMP_RED));
 	}
 	
 	@Test
@@ -89,7 +89,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(TWELVE_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertTrue(response.getBerlinTime().contains(FIVE_HOUR_FIRSTTWOON));
+		assertTrue(response.getBerlinTime().contains(FIRST_TWO_LAMPS_RED));
 	}
 	
 	@Test
@@ -98,7 +98,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(EIGHTEEN_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertTrue(response.getBerlinTime().contains(FIVE_HOUR_FIRSTTHREEON));
+		assertTrue(response.getBerlinTime().contains(FIRST_THREE_LAMPS_RED));
 	}
 	
 	@Test
@@ -107,7 +107,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(TWENTYTHREE_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertTrue(response.getBerlinTime().contains(FIVE_HOUR_ALLON));
+		assertTrue(response.getBerlinTime().contains(ALL_FOUR_LAMPS_RED));
 	}
 	
 	@Test
@@ -125,7 +125,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(SIX_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertEquals(response.getBerlinTime().split(" ")[2],FIVE_HOUR_FIRSTON);
+		assertEquals(response.getBerlinTime().split(" ")[2],FIRST_LAMP_RED);
 	}
 	
 	@Test
@@ -134,7 +134,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(TWELVE_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertEquals(response.getBerlinTime().split(" ")[2],FIVE_HOUR_FIRSTTWOON);
+		assertEquals(response.getBerlinTime().split(" ")[2],FIRST_TWO_LAMPS_RED);
 	}
 	
 	@Test
@@ -143,7 +143,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(EIGHTEEN_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertEquals(response.getBerlinTime().split(" ")[2],FIVE_HOUR_FIRSTTHREEON);
+		assertEquals(response.getBerlinTime().split(" ")[2],FIRST_THREE_LAMPS_RED);
 	}
 	
 	@Test
@@ -152,7 +152,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(FOURTEEN_HOUR, ZERO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertEquals(response.getBerlinTime().split(" ")[2],FIVE_HOUR_ALLON);
+		assertEquals(response.getBerlinTime().split(" ")[2],ALL_FOUR_LAMPS_RED);
 	}
 	
 	@Test
@@ -161,7 +161,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(FIVE_HOUR, TWO_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertEquals(response.getBerlinTime().split(" ")[3],FIVE_MINT_ALLOFF);
+		assertEquals(response.getBerlinTime().split(" ")[3],ALL_11_LAMPS_OFF);
 	}
 	
 	@Test
@@ -170,7 +170,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(FIVE_HOUR, SIX_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertEquals(response.getBerlinTime().split(" ")[3],FIVE_MINT_FIRSTON);
+		assertEquals(response.getBerlinTime().split(" ")[3],ONE_LAMP_YELLOW_OUT_OF_ELEVEN);
 	}
 	
 	@Test
@@ -179,7 +179,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(FIVE_HOUR, TWELVE_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertEquals(response.getBerlinTime().split(" ")[3],FIVE_MINT_FIRSTTWOON);
+		assertEquals(response.getBerlinTime().split(" ")[3],TWO_LAMP_YELLOW_OUT_OF_ELEVEN);
 	}
 	
 	@Test
@@ -188,7 +188,7 @@ public class BerlinClockServiceTest {
 
 		TimeInput time = new TimeInput(FIVE_HOUR, FIFTEEN_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertEquals(response.getBerlinTime().split(" ")[3],FIVE_MINT_THIRDRED);
+		assertEquals(response.getBerlinTime().split(" ")[3],THIRD_LAMP_RED_OUT_OF_ELEVEN);
 	}
 	
 	@Test
@@ -210,11 +210,12 @@ public class BerlinClockServiceTest {
 	}
 	
 	@Test
-	@DisplayName("First Lamp in One Minute Row should be Yellow when hour divided by 5 has reminder 1")
+	@DisplayName("First Lamp in One Minute Row should be Yellow when minute divided by 5 has reminder 1")
 	public void convertToBerlinTime_whenMinuteDividedByFiveHasRemainderOne_firstLampShouldBeYellow() {
 
 		TimeInput time = new TimeInput(SIX_HOUR, SIX_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
-		assertEquals(response.getBerlinTime().split(" ")[4],ONE_MINT_FIRSTON);
+		assertEquals(response.getBerlinTime().split(" ")[4],FIRST_LAMP_YELLOW);
 	}
+	
 }
