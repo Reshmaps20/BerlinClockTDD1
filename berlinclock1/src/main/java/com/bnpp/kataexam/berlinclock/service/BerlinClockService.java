@@ -2,6 +2,7 @@ package com.bnpp.kataexam.berlinclock.service;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import com.bnpp.kataexam.berlinclock.model.BerlinClockResponse;
 import com.bnpp.kataexam.berlinclock.model.DetailedBerlinTime;
@@ -12,20 +13,38 @@ public class BerlinClockService {
 
 	public BerlinClockResponse convertToBerlinTime(TimeInput time) {
 
-		String secondLamp = (Integer.parseInt(time.getSeconds()) % 2 == 0) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue();
+		DetailedBerlinTime detailedBerlinTime = new DetailedBerlinTime();
+		String berlinTime = calculateBerlinTime(time, detailedBerlinTime);
+
+		return new BerlinClockResponse(detailedBerlinTime, berlinTime);
+	}
+
+	private String calculateBerlinTime(TimeInput time, DetailedBerlinTime detailedBerlinTime) {
+
+		String secondLamp = getSecondsLamp(Integer.parseInt(time.getSeconds()));
 		String hourLamp = getHoursLamp(time);
 		String oneHourLamp = getOneHourLamp(time);
 		String fiveMinuteLamp = getMinuteLamp(time);
 		String oneMinuteLamp = getOneMinuteLamp(time);
-		
-		DetailedBerlinTime detailedBerlinTime = new DetailedBerlinTime();
+
+		setBerlinTimeDetails(detailedBerlinTime, secondLamp, hourLamp, oneHourLamp, fiveMinuteLamp, oneMinuteLamp);
+
+		return Stream.of(secondLamp, hourLamp, oneHourLamp, fiveMinuteLamp, oneMinuteLamp)
+				.collect(Collectors.joining(" "));
+	}
+
+	private void setBerlinTimeDetails(DetailedBerlinTime detailedBerlinTime, String secondLamp, String hourLamp,
+			String oneHourLamp, String fiveMinuteLamp, String oneMinuteLamp) {
+
 		detailedBerlinTime.setSecondsLamp(secondLamp);
 		detailedBerlinTime.setTopFiveHourLamps(hourLamp);
 		detailedBerlinTime.setBottomOneHourLamps(oneHourLamp);
 		detailedBerlinTime.setTopFiveMinuteLamps(fiveMinuteLamp);
 		detailedBerlinTime.setBottomOneMinuteLamps(oneMinuteLamp);
-		
-		return new BerlinClockResponse(detailedBerlinTime,String.join(" ", secondLamp, hourLamp,oneHourLamp,fiveMinuteLamp, oneMinuteLamp));
+	}
+
+	private String getSecondsLamp(int seconds) {
+		return (seconds % 2 == 0) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue();
 	}
 
 	private String getOneMinuteLamp(TimeInput time) {
@@ -51,10 +70,9 @@ public class BerlinClockService {
 	}
 
 	private String getOneHourLamp(TimeInput time) {
-		
+
 		int hours = Integer.parseInt(time.getHours());
-		return IntStream.range(0, 4)
-				.mapToObj(i -> (i < hours % 5) ? Lamp.RED.getValue() : Lamp.OFF.getValue())
+		return IntStream.range(0, 4).mapToObj(i -> (i < hours % 5) ? Lamp.RED.getValue() : Lamp.OFF.getValue())
 				.collect(Collectors.joining());
 	}
 
