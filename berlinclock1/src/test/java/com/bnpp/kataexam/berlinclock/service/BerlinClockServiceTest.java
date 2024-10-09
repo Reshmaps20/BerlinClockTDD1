@@ -51,6 +51,7 @@ public class BerlinClockServiceTest {
 	private static final String FIRST_THREE_LAMPS_YELLOW = "YYYO";
 	private static final String ALL_FOUR_LAMPS_YELLOW = "YYYY";
 	private static final String DIGITAL_TIME = "14:24:05";
+	private static final String BERLIN_TIME = "O RROO RRRR YYRYOOOOOOO YYYY";
 	
 	@BeforeEach
 	public void setup() {
@@ -323,5 +324,14 @@ public class BerlinClockServiceTest {
 		TimeInput time = new TimeInput(FOURTEEN_HOUR, TWENTYFOUR_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
 		assertEquals(response.getDigitalTime(),DIGITAL_TIME );
+	}
+	
+	@Test
+	@DisplayName("Berlin Time should be correctly displayed")
+	public void convertToBerlinTime_passHoursMinutesSeconds_responseShouldContainBerlinTime() {
+
+		TimeInput time = new TimeInput(FOURTEEN_HOUR, TWENTYFOUR_MINUTE, FIVE_SECONDS);
+		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+		assertEquals(response.getBerlinTime(),BERLIN_TIME);
 	}
 }
