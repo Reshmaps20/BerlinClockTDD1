@@ -30,6 +30,7 @@ public class BerlinClockServiceTest {
 	private static final String EIGHTEEN_MINUTE = "18";
 	private static final String TWENTY_MINUTE = "20";
 	private static final String TWENTYFOUR_MINUTE = "24";
+	private static final String SEVENTY_MINUTE = "70";
 	private static final String TWO_SECONDS = "02";
 	private static final String FIVE_SECONDS = "05";
 	private static final String YELLOW = "Y";
@@ -288,6 +289,16 @@ public class BerlinClockServiceTest {
 	public void convertToBerlinTime_checkWhetherTheHourIsValid_shouldThrowTimeFormatException() {
 
 		TimeInput time = new TimeInput(THIRTY_HOUR, TWENTYFOUR_MINUTE, FIVE_SECONDS);
+		assertThrows(TimeFormatException.class, () -> {
+			berlinClockService.convertToBerlinTime(time);
+		});
+	}
+	
+	@Test
+	@DisplayName("Input Minuted must be between 0 and 59")
+	public void convertToBerlinTime_checkWhetherTheMinutesIsValid_shouldThrowTimeFormatException() {
+
+		TimeInput time = new TimeInput(FOURTEEN_HOUR, SEVENTY_MINUTE, FIVE_SECONDS);
 		assertThrows(TimeFormatException.class, () -> {
 			berlinClockService.convertToBerlinTime(time);
 		});
