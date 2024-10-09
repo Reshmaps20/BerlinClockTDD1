@@ -23,15 +23,12 @@ public class BerlinClockService {
 		int minutes = Integer.parseInt(time.getMinutes());
 		StringBuilder lamps = new StringBuilder();
 
-		if (minutes == 15)
-			lamps.append("YYY");
-		if (minutes >= 10 && minutes < 15)
-			lamps.append("YY");
-		else if (minutes >= 5 && minutes < 10)
-			lamps.append(Lamp.YELLOW.getValue());
-
-		while (lamps.length() < 11) {
-			lamps.append(Lamp.OFF.getValue());
+		for (int i = 0; i < 11; i++) {
+			if (i < minutes / 5) {
+				lamps.append(Lamp.YELLOW.getValue());
+			} else {
+				lamps.append(Lamp.OFF.getValue());
+			}
 		}
 
 		String result = lamps.toString().replace("YYY", "YYR");

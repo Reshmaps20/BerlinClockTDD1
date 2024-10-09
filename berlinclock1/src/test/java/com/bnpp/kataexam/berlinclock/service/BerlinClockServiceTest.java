@@ -24,6 +24,7 @@ public class BerlinClockServiceTest {
 	private static final String SIX_MINUTE = "06";
 	private static final String TWELVE_MINUTE = "12";
 	private static final String FIFTEEN_MINUTE = "15";
+	private static final String TWENTY_MINUTE = "20";
 	private static final String TWO_SECONDS = "02";
 	private static final String FIVE_SECONDS = "05";
 	private static final String YELLOW = "Y";
@@ -37,6 +38,7 @@ public class BerlinClockServiceTest {
 	private static final String FIVE_MINT_FIRSTON = "YOOOOOOOOOO";
 	private static final String FIVE_MINT_FIRSTTWOON = "YYOOOOOOOOO";
 	private static final String FIVE_MINT_THIRDRED = "YYROOOOOOOO";
+	private static final String FIVE_MINT_FOURLAMPON = "YYRYOOOOOOO";
 
 
 	@BeforeEach
@@ -186,5 +188,14 @@ public class BerlinClockServiceTest {
 		TimeInput time = new TimeInput(FIVE_HOUR, FIFTEEN_MINUTE, FIVE_SECONDS);
 		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
 		assertEquals(response.getBerlinTime().split(" ")[3],FIVE_MINT_THIRDRED);
+	}
+	
+	@Test
+	@DisplayName("Lamps in Five Minute Row should be illuminated correctly for the minute divisible by 5")
+	public void convertToBerlinTime_minutesDivisibleByFive_shouldIlluminateCorrectLamps() {
+
+		TimeInput time = new TimeInput(FIVE_HOUR, TWENTY_MINUTE, FIVE_SECONDS);
+		BerlinClockResponse response = berlinClockService.convertToBerlinTime(time);
+		assertEquals(response.getBerlinTime().split(" ")[3],FIVE_MINT_FOURLAMPON);
 	}
 }
