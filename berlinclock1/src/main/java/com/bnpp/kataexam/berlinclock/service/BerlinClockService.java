@@ -24,6 +24,8 @@ public class BerlinClockService {
 		int minutes = Integer.parseInt(time.getMinutes());
 		if (minutes % 5 == 1)
 			return "YOOO";
+		else if (minutes % 5 == 2)
+			return "YYOO";
 		else
 			return "OOOO";
 	}
