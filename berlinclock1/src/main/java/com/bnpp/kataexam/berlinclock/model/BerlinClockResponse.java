@@ -7,5 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class BerlinClockResponse {
 
+	private DetailedBerlinTime detailedBerlinTime;
 	private String berlinTime;
 }

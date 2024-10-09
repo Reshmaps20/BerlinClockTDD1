@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.bnpp.kataexam.berlinclock.model.BerlinClockResponse;
+import com.bnpp.kataexam.berlinclock.model.DetailedBerlinTime;
 import com.bnpp.kataexam.berlinclock.model.TimeInput;
 import com.bnpp.kataexam.berlinclock.store.Lamp;
 
@@ -16,7 +17,15 @@ public class BerlinClockService {
 		String oneHourLamp = getOneHourLamp(time);
 		String fiveMinuteLamp = getMinuteLamp(time);
 		String oneMinuteLamp = getOneMinuteLamp(time);
-		return new BerlinClockResponse(String.join(" ", secondLamp, hourLamp,oneHourLamp,fiveMinuteLamp, oneMinuteLamp));
+		
+		DetailedBerlinTime detailedBerlinTime = new DetailedBerlinTime();
+		detailedBerlinTime.setSecondsLamp(secondLamp);
+		detailedBerlinTime.setTopFiveHourLamps(hourLamp);
+		detailedBerlinTime.setBottomOneHourLamps(oneHourLamp);
+		detailedBerlinTime.setTopFiveMinuteLamps(fiveMinuteLamp);
+		detailedBerlinTime.setBottomOneMinuteLamps(oneMinuteLamp);
+		
+		return new BerlinClockResponse(detailedBerlinTime,String.join(" ", secondLamp, hourLamp,oneHourLamp,fiveMinuteLamp, oneMinuteLamp));
 	}
 
 	private String getOneMinuteLamp(TimeInput time) {
