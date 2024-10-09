@@ -50,16 +50,9 @@ public class BerlinClockService {
 	private String getOneMinuteLamp(TimeInput time) {
 
 		int minutes = Integer.parseInt(time.getMinutes());
-		if (minutes % 5 == 1)
-			return "YOOO";
-		else if (minutes % 5 == 2)
-			return "YYOO";
-		else if (minutes % 5 == 3)
-			return "YYYO";
-		else if (minutes % 5 == 4)
-			return "YYYY";
-		else
-			return "OOOO";
+
+		return IntStream.range(0, 4).mapToObj(i -> (i < minutes % 5) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue())
+				.collect(Collectors.joining());
 	}
 
 	private String getMinuteLamp(TimeInput time) {
