@@ -21,18 +21,12 @@ public class BerlinClockService {
 	private String getMinuteLamp(TimeInput time) {
 
 		int minutes = Integer.parseInt(time.getMinutes());
-		StringBuilder lamps = new StringBuilder();
 
-		for (int i = 0; i < 11; i++) {
-			if (i < minutes / 5) {
-				lamps.append(Lamp.YELLOW.getValue());
-			} else {
-				lamps.append(Lamp.OFF.getValue());
-			}
-		}
+		String mintLamps = IntStream.range(0, 11)
+				.mapToObj(i -> (i < minutes / 5) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue())
+				.collect(Collectors.joining());
 
-		String result = lamps.toString().replace("YYY", "YYR");
-		return result;
+		return mintLamps.replace("YYY", "YYR");
 	}
 
 	private String getOneHourLamp(TimeInput time) {
