@@ -18,17 +18,11 @@ public class BerlinClockService {
 	}
 
 	private String getOneHourLamp(TimeInput time) {
+		
 		int hours = Integer.parseInt(time.getHours());
-		if (hours % 5 == 4)
-			return "RRRR";
-		else if (hours % 5 == 3)
-			return "RRRO";
-		else if (hours % 5 == 2)
-			return "RROO";
-		else if (hours % 5 == 1)
-			return "ROOO";
-		else
-			return "OOOO";
+		return IntStream.range(0, 4)
+				.mapToObj(i -> (i < hours % 5) ? Lamp.RED.getValue() : Lamp.OFF.getValue())
+				.collect(Collectors.joining());
 	}
 
 	private String getHoursLamp(TimeInput time) {
