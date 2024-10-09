@@ -4,21 +4,32 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.springframework.stereotype.Service;
+
 import com.bnpp.kataexam.berlinclock.constants.Constants;
+import com.bnpp.kataexam.berlinclock.exception.TimeFormatException;
 import com.bnpp.kataexam.berlinclock.model.BerlinClockResponse;
 import com.bnpp.kataexam.berlinclock.model.DetailedBerlinTime;
 import com.bnpp.kataexam.berlinclock.model.TimeInput;
 import com.bnpp.kataexam.berlinclock.store.Lamp;
 import com.bnpp.kataexam.berlinclock.store.LampRow;
 
+@Service
 public class BerlinClockService {
 
 	public BerlinClockResponse convertToBerlinTime(TimeInput time) {
 
+		validateTimeValues(time);
 		DetailedBerlinTime detailedBerlinTime = new DetailedBerlinTime();
 		String berlinTime = calculateBerlinTime(time, detailedBerlinTime);
 
 		return new BerlinClockResponse(detailedBerlinTime, berlinTime);
+	}
+
+	private void validateTimeValues(TimeInput time) {
+		if (time.getHours() == null || time.getHours().isEmpty()) {
+			throw new TimeFormatException(Constants.TIME_IS_EMPTY_ERROR);
+		}
 	}
 
 	private String calculateBerlinTime(TimeInput time, DetailedBerlinTime detailedBerlinTime) {
