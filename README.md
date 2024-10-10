@@ -29,6 +29,7 @@ The Berlin Clock (Mengenlehreclock or Berlin Uhr) is a clock that tells the time
 - Build the project and run the tests by running
     ```bash
     mvn clean install
+- The **Model Classes** used in the project are generated from the **OpenAPI** specification during the build process. Running `mvn clean install` will regenerate the models as part of the build.
 
 ## Sample Input and Output
 
