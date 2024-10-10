@@ -14,6 +14,22 @@ The Berlin Clock (Mengenlehreclock or Berlin Uhr) is a clock that tells the time
     - The **upper row** represents **5-minute blocks** and is made up of **11 lamps**—every third lamp is **red**, while the rest are **yellow**.
     - The **bottom row** represents **1-minute blocks** and is made up of **4 yellow lamps**.
 
+## Requirements
+
+- **Java** : 1.8
+- **Springboot** : 2.7
+- **Maven** : For Dependency management
+- **JUnit** : 5.x
+
+## How to Build the Application
+
+- Clone this repository:
+   ```bash
+   git clone https://github.com/Reshmaps20/BerlinClockTDD1
+- Build the project and run the tests by running
+    ```bash
+    mvn clean install
+
 ## Sample Input and Output
 
 ### Sample Input
@@ -45,3 +61,7 @@ The Berlin Clock (Mengenlehreclock or Berlin Uhr) is a clock that tells the time
   },
   "berlinTime": "O RRRR RRRO YYRYYRYYRYY YYYY"
   }
+## Test reports
+- Once after successful build of 
+  `mvn clean install`, navigate to target folder of the project root directory
+- **Jacoco code coverage report :** Code Coverage report will be availabe in `target\site\jacoco` folder. View the report by launching **index.html**
