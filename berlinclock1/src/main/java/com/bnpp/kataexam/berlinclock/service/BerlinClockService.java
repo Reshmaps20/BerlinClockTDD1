@@ -1,7 +1,8 @@
 package com.bnpp.kataexam.berlinclock.service;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -24,52 +25,61 @@ public class BerlinClockService {
 	public BerlinClockResponse convertToBerlinTime(TimeInput time) {
 
 		timeValidator.validateTimeValues(time);
-		DetailedBerlinTime detailedBerlinTime = new DetailedBerlinTime();
-		String berlinTime = calculateBerlinTime(time, detailedBerlinTime);
+		Map<String, String> lamps = calculateLamps(time);
 
-		return new BerlinClockResponse(convertToDigitalTime(time),detailedBerlinTime, berlinTime);
+		return BerlinClockResponse.builder()
+				.digitalTime(convertToDigitalTime(time))
+				.detailedBerlinTime(createDetailedBerlinTime(lamps))
+				.berlinTime(calculateBerlinTime(lamps))
+				.build();
 	}
 
-	private String calculateBerlinTime(TimeInput time, DetailedBerlinTime detailedBerlinTime) {
+	private String calculateBerlinTime(Map<String, String> lamps) {
 
-		String secondLamp = getSecondsLamp(Integer.parseInt(time.getSeconds()));
-		List<String> hourLamps = getHoursLamp(Integer.parseInt(time.getHours()));
-		List<String> minuteLamps = getMinuteLamp(Integer.parseInt(time.getMinutes()));
-
-		setBerlinTimeDetails(detailedBerlinTime, secondLamp, hourLamps, minuteLamps);
-
-		return Stream.of(secondLamp, hourLamps.get(0), hourLamps.get(1), minuteLamps.get(0), minuteLamps.get(1))
+		return Stream.of(
+						lamps.get(LampRow.SECONDS_LAMP.getName()),
+						lamps.get(LampRow.TOP_HOUR_LAMP.getName()),
+						lamps.get(LampRow.BOTTOM_HOUR_LAMP.getName()),
+						lamps.get(LampRow.TOP_MINUTE_LAMP.getName()),
+						lamps.get(LampRow.BOTTOM_MINUTE_LAMP.getName())
+				)
 				.collect(Collectors.joining(" "));
 	}
 
-	private void setBerlinTimeDetails(DetailedBerlinTime detailedBerlinTime, String secondLamp, List<String> hourLamps,
-			List<String> minuteLamps) {
+	private DetailedBerlinTime createDetailedBerlinTime(Map<String, String> lamps) {
 
-		detailedBerlinTime.setSecondsLamp(secondLamp);
-		detailedBerlinTime.setTopFiveHourLamps(hourLamps.get(0));
-		detailedBerlinTime.setBottomOneHourLamps(hourLamps.get(1));
-		detailedBerlinTime.setTopFiveMinuteLamps(minuteLamps.get(0));
-		detailedBerlinTime.setBottomOneMinuteLamps(minuteLamps.get(1));
+		return DetailedBerlinTime.builder()
+				.secondsLamp(lamps.get(LampRow.SECONDS_LAMP.getName()))
+				.topFiveHourLamps(lamps.get(LampRow.TOP_HOUR_LAMP.getName()))
+				.bottomOneHourLamps(lamps.get(LampRow.BOTTOM_HOUR_LAMP.getName()))
+				.topFiveMinuteLamps(lamps.get(LampRow.TOP_MINUTE_LAMP.getName()))
+				.bottomOneMinuteLamps(lamps.get(LampRow.BOTTOM_MINUTE_LAMP.getName()))
+				.build();
+	}
+
+	private Map<String,String> calculateLamps(TimeInput time) {
+
+		Map<String, String> lamps = new HashMap<>();
+		int hours = Integer.parseInt(time.getHours());
+		int minutes = Integer.parseInt(time.getMinutes());
+		int seconds = Integer.parseInt(time.getSeconds());
+
+		lamps.put(LampRow.SECONDS_LAMP.getName(), getSecondsLamp(seconds));
+		lamps.put(LampRow.TOP_HOUR_LAMP.getName(), getHourLampRow(LampRow.TOP_HOUR_LAMP.getLength(), hours / Constants.HOUR_DIVIDER));
+		lamps.put(LampRow.BOTTOM_HOUR_LAMP.getName(), getHourLampRow(LampRow.BOTTOM_HOUR_LAMP.getLength(), hours % Constants.HOUR_DIVIDER));
+		lamps.put(LampRow.TOP_MINUTE_LAMP.getName(), getMinuteLampRow(LampRow.TOP_MINUTE_LAMP.getLength(), minutes / Constants.MINUTES_DIVIDER, true) );
+		lamps.put(LampRow.BOTTOM_MINUTE_LAMP.getName(), getMinuteLampRow(LampRow.BOTTOM_MINUTE_LAMP.getLength(), minutes % Constants.MINUTES_DIVIDER, false));
+
+		return lamps;
 	}
 
 	private String getSecondsLamp(int seconds) {
 		return (seconds % Constants.SECONDS_DIVIDER == Constants.ZERO) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue();
 	}
 
-	private List<String> getHoursLamp(int hours) {
-		return Arrays.asList(getHourLampRow(LampRow.TOP_HOUR_LAMP.getLength(), hours / Constants.HOUR_DIVIDER),
-				getHourLampRow(LampRow.BOTTOM_HOUR_LAMP.getLength(), hours % Constants.HOUR_DIVIDER));
-	}
-
-	private List<String> getMinuteLamp(int minutes) {
-		return Arrays.asList(
-				getMinuteLampRow(LampRow.TOP_MINUTE_LAMP.getLength(), minutes / Constants.MINUTES_DIVIDER, true),
-				getMinuteLampRow(LampRow.BOTTOM_MINUTE_LAMP.getLength(), minutes % Constants.MINUTES_DIVIDER, false));
-	}
-
 	private String getMinuteLampRow(int rowLength, int minuteValue, boolean isTopRow) {
 		String mintLamps = IntStream.range(Constants.ZERO, rowLength)
-				.mapToObj(i -> (i < minuteValue) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue())
+				.mapToObj(lampIndex -> (lampIndex < minuteValue) ? Lamp.YELLOW.getValue() : Lamp.OFF.getValue())
 				.collect(Collectors.joining());
 
 		return isTopRow ? mintLamps.replace(Constants.REPLACE_YYY, Constants.REPLACE_TO_YYR) : mintLamps;
@@ -77,14 +87,14 @@ public class BerlinClockService {
 
 	private String getHourLampRow(int rowLength, int hourValue) {
 		return IntStream.range(Constants.ZERO, rowLength)
-				.mapToObj(i -> (i < hourValue) ? Lamp.RED.getValue() : Lamp.OFF.getValue())
+				.mapToObj(lampIndex -> (lampIndex  < hourValue) ? Lamp.RED.getValue() : Lamp.OFF.getValue())
 				.collect(Collectors.joining());
 	}
 	
 	private String convertToDigitalTime(TimeInput time) {
 		return Arrays.stream(new int[] { Integer.parseInt(time.getHours()), Integer.parseInt(time.getMinutes()),
 						Integer.parseInt(time.getSeconds()) })
-				.mapToObj(i -> String.format(Constants.TIME_FORMAT, i))
+				.mapToObj(timeValue -> String.format(Constants.TIME_FORMAT, timeValue))
 				.collect(Collectors.joining(Constants.TIME_SEPARATOR));
 	}
 }
